@@ -1,0 +1,387 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body,html{
+	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	background: #ffffff;
+	color: #0d0d0d;
+}
+
+.container-fluid {
+	background: #ffffff;
+	padding: 20px;
+}
+
+.chat{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.card{
+	height: 600px;
+	border-radius: 12px !important;
+	background-color: #ffffff !important;
+	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+	border: 1px solid #e5e5e5 !important;
+	display: flex;
+	flex-direction: column;
+}
+
+.msg_card_body{
+	flex: 1;
+	overflow-y: auto;
+	padding: 20px;
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.msg_card_body::-webkit-scrollbar {
+	width: 8px;
+}
+
+.msg_card_body::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.msg_card_body::-webkit-scrollbar-thumb {
+	background: #d1d5db;
+	border-radius: 4px;
+}
+
+.card-header{
+	border-radius: 12px 12px 0 0 !important;
+	border-bottom: 1px solid #e5e5e5 !important;
+	background-color: #ffffff !important;
+	padding: 20px !important;
+}
+
+.card-footer{
+	border-radius: 0 0 12px 12px !important;
+	border-top: 1px solid #e5e5e5 !important;
+	background-color: #ffffff !important;
+	padding: 16px 20px !important;
+}
+
+.img_cont {
+	position: relative;
+	height: 60px;
+	width: 60px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.img_cont img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+.online_icon{
+	position: absolute;
+	height: 14px;
+	width:14px;
+	background-color: #10a981;
+	border-radius: 50%;
+	bottom: 2px;
+	right: 2px;
+	border:2px solid white;
+}
+
+.user_img{
+	height: 70px;
+	width: 70px;
+	border:1.5px solid #f5f6fa;
+}
+
+.user_img_msg{
+	height: 40px;
+	width: 40px;
+	border:1.5px solid #f5f6fa;
+}
+
+.img_cont_msg{
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.img_cont_msg img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+.offline{
+	background-color: #c23616 !important;
+}
+
+.user_info{
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 15px;
+}
+
+.user_info span{
+	font-size: 18px;
+	font-weight: 600;
+	color: #0d0d0d;
+	display: block;
+}
+
+.user_info p{
+	font-size: 13px;
+	color: #757575;
+	margin-top: 4px;
+}
+
+.msg_cotainer{
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 10px;
+	border-radius: 12px;
+	background-color: #f7f7f7;
+	padding: 12px 16px;
+	position: relative;
+	color: #0d0d0d;
+	line-height: 1.6;
+	word-wrap: break-word;
+	font-size: 15px;
+	max-width: 100%;
+}
+
+.msg_cotainer_send{
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-right: 10px;
+	border-radius: 12px;
+	background-color: #10a981;
+	padding: 12px 16px;
+	position: relative;
+	color: #ffffff;
+	line-height: 1.6;
+	word-wrap: break-word;
+	font-size: 15px;
+	max-width: 100%;
+}
+
+.msg_time{
+	position: absolute;
+	left: 0;
+	bottom: -18px;
+	color: #999999;
+	font-size: 11px;
+	margin-top: 4px;
+}
+
+.msg_time_send{
+	position: absolute;
+	right:0;
+	bottom: -18px;
+	color: #999999;
+	font-size: 11px;
+	margin-top: 4px;
+}
+
+.msg_head{
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.type_msg{
+	background-color: #ffffff !important;
+	border: 1px solid #e5e5e5 !important;
+	color: #0d0d0d !important;
+	height: 48px !important;
+	overflow-y: auto;
+	border-radius: 12px !important;
+	padding: 12px 16px !important;
+	font-size: 15px;
+	resize: none;
+	font-family: inherit;
+}
+
+.type_msg::placeholder {
+	color: #999999;
+}
+
+.type_msg:focus{
+	box-shadow: 0 0 0 2px rgba(16, 169, 129, 0.1) !important;
+	outline: none !important;
+	border-color: #10a981 !important;
+}
+
+.send_btn{
+	border-radius: 8px !important;
+	background-color: #10a981 !important;
+	border: 0 !important;
+	color: white !important;
+	cursor: pointer;
+	height: 48px !important;
+	width: 48px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	transition: background-color 0.2s;
+	margin-left: 12px;
+}
+
+.send_btn:hover {
+	background-color: #0d9970 !important;
+}
+
+.send_btn:active {
+	background-color: #0a7a5a !important;
+}
+
+.d-flex {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.justify-content-end {
+	justify-content: flex-end;
+}
+
+.justify-content-start {
+	justify-content: flex-start;
+}
+
+#messageArea {
+	display: flex;
+	gap: 8px;
+	align-items: flex-end;
+}
+
+#text {
+	flex: 1;
+}
+
+.contacts_body{
+	padding:  0.75rem 0 !important;
+	overflow-y: auto;
+	white-space: nowrap;
+}
+
+.container{
+	align-content: center;
+}
+
+.search{
+	border-radius: 15px 0 0 15px !important;
+	background-color: rgba(0,0,0,0.3) !important;
+	border:0 !important;
+	color:white !important;
+}
+
+.search:focus{
+	 box-shadow:none !important;
+   outline:0px !important;
+}
+
+.attach_btn{
+	border-radius: 15px 0 0 15px !important;
+	background-color: rgba(0,0,0,0.3) !important;
+	border:0 !important;
+	color: white !important;
+	cursor: pointer;
+}
+
+.search_btn{
+	border-radius: 0 15px 15px 0 !important;
+	background-color: rgba(0,0,0,0.3) !important;
+	border:0 !important;
+	color: white !important;
+	cursor: pointer;
+}
+
+.contacts{
+	list-style: none;
+	padding: 0;
+}
+
+.contacts li{
+	width: 100% !important;
+	padding: 5px 10px;
+	margin-bottom: 15px !important;
+}
+
+.active{
+	background-color: rgba(0,0,0,0.3);
+}
+
+.video_cam{
+	margin-left: 50px;
+	margin-top: 5px;
+}
+
+.video_cam span{
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+	margin-right: 20px;
+}
+
+.msg_head{
+	position: relative;
+}
+
+#action_menu_btn{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	color: white;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.action_menu{
+	z-index: 1;
+	position: absolute;
+	padding: 15px 0;
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+	border-radius: 15px;
+	top: 30px;
+	right: 15px;
+	display: none;
+}
+
+.action_menu ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.action_menu ul li{
+	width: 100%;
+	padding: 10px 15px;
+	margin-bottom: 5px;
+}
+
+.action_menu ul li i{
+	padding-right: 10px;
+}
+
+.action_menu ul li:hover{
+	cursor: pointer;
+	background-color: rgba(0,0,0,0.2);
+}
+
+@media(max-width: 576px){
+	.contacts_card{
+	margin-bottom: 15px !important;
+}
+	.card {
+		height: 500px;
+	}
+}

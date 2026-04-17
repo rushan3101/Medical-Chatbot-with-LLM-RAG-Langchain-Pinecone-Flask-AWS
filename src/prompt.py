@@ -1,0 +1,46 @@
+
+def get_metadata_prompt():
+    section_set = []
+    term_set = []
+
+    with open("src\\section_set.txt", "r") as f:
+        section_set = [line.strip() for line in f.readlines()]
+    with open("src\\term_set.txt", "r") as f:
+        term_set = [line.strip() for line in f.readlines()]
+
+    # Metadata Prompt
+    METADATA_PROMPT = f"""
+    Extract structured medical query information.
+
+    Rules:
+    - Extract section names ONLY from this list:
+    {section_set}
+
+    - Extract the closest matching medical term from this list:
+    {term_set}
+
+    Return output in JSON format with keys:
+    term: string
+    section: list[string]
+    """
+
+    return str(METADATA_PROMPT)
+
+def get_system_prompt():
+    # System Prompt
+    SYSTEM_PROMPT = (
+    "You are an Medical assistant for question-answering tasks. "
+    "Use the following pieces of retrieved context to answer "
+    "the question. If you don't know the answer, say that you "
+    "don't know. Use five sentences maximum and keep the "
+    "answer concise. Mention section and page number from the book along with the answer"
+    "like this (Causes and Symptoms,p 24)."
+    " "
+)
+
+
+    return str(SYSTEM_PROMPT)
+
+if __name__ == "__main__":
+    print(get_metadata_prompt())
+    print(get_system_prompt())
