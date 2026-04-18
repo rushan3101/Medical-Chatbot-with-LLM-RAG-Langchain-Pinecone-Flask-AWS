@@ -1,13 +1,13 @@
 langchain
 langchain-core
+langchain-text-splitters
 flask 
 sentence-transformers
-pypdf
 pyMuPDF
 python-dotenv
-langchain-pinecone 
+langchain-pinecone
+pinecone
 langchain-openai
-langchain-openrouter
 langchain-google-genai
-langchain-community
+langchain-huggingface
 -e .
