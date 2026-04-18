@@ -1,5 +1,8 @@
 
-def get_metadata_prompt():
+def get_metadata_prompt() -> str:
+    """
+    Returns prompt for extracting term and section metadata 
+    """
     section_set = []
     term_set = []
 
@@ -26,8 +29,13 @@ def get_metadata_prompt():
 
     return str(METADATA_PROMPT)
 
-def get_system_prompt():
+def get_system_prompt() -> str:
     # System Prompt
+    """
+    Returns a prompt for generating system responses.
+
+    The system prompt is a string that gives instructions to the model on how to generate a response.
+    """
     SYSTEM_PROMPT = (
     "You are an Medical assistant for question-answering tasks. "
     "Use the following pieces of retrieved context to answer "

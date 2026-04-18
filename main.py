@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
-from typing import List, Optional
+from typing import List, Optional, Generator
 from pydantic import BaseModel
 
 from sentence_transformers import CrossEncoder
 
 from langchain_pinecone import PineconeVectorStore
+from langchain_core.documents import Document
+from langchain_core.messages import BaseMessage
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
@@ -54,11 +56,31 @@ metadata_chain = metadata_prompt | meta_llm.with_structured_output(QueryMetadata
 
 
 # Helpers
-def deduplicate(docs):
+def deduplicate(docs: List[Document]) -> List[Document]:
+    """
+    Remove duplicates from a list of documents based on their page content.
+
+    Args:
+        docs (list[Document]): A list of Document objects.
+
+    Returns:
+        list[Document]: A list of Document objects with no duplicates based on their page_content.
+    """
     return list({d.page_content: d for d in docs}.values())
 
 
-def rerank(query, docs, top_k=8):
+def rerank(query: str, docs: List[Document], top_k: int = 8) -> List[Document]:
+    """
+    Re-rank a list of documents based on their similarity to a given query.
+
+    Args:
+        query (str): The query to rank the documents against.
+        docs (list[Document]): A list of Document objects to rank.
+        top_k (int, optional): The number of top-ranked documents to return. Defaults to 8.
+
+    Returns:
+        list[Document]: A list of the top-ranked Document objects.
+    """
     if not docs:
         return []
 
@@ -69,15 +91,48 @@ def rerank(query, docs, top_k=8):
     return [doc for _, doc in ranked[:top_k]]
 
 
-def format_context(docs):
+def format_context(docs: List[Document]) -> str:
+    """
+    Format a list of documents into a string to be used as context for a language model.
+
+    Args:
+        docs (list[Document]): A list of Document objects to format.
+
+    Returns:
+        str: A formatted string containing the page number and page content for each document.
+    """
     return "\n\n---\n\n".join(
-        [f'Page {d.metadata["page"]}: {d.page_content}' for d in docs]
+        [{d.page_content} for d in docs]
     )
 
 
 
 # RAG PIPELINE
-def run_rag(query,chat_history):
+def run_rag(query: str,chat_history:list[BaseMessage]) -> Generator[str, None, None]:
+    """
+    Run the RAG pipeline to generate a response to a given query.
+
+    The pipeline consists of the following steps:
+
+    1. Metadata Extraction: Extract term and section metadata from the query using a Google Generative AI model.
+
+    2. Retrieval: Retrieve documents from the vector store based on the query, using semantic search, section filtered search, and term + section search.
+
+    3. Deduplicate: Remove duplicates from the list of retrieved documents based on their page content.
+
+    4. Rerank: Re-rank the list of documents based on their similarity to the query using a CrossEncoder model.
+
+    5. Context: Format the top-ranked documents into a string to be used as context for the final language model.
+
+    6. Final LLM (STREAM): Use the context and query to generate a response using a ChatOpenAI model.
+
+    Args:
+        query (str): The query to generate a response to.
+        chat_history (list[dict]): The conversation history to use as context.
+
+    Returns:
+        generator: A generator that yields the response to the query.
+    """
 
     # 1. Metadata
     meta = metadata_chain.invoke({"query": query})
@@ -115,10 +170,10 @@ def run_rag(query,chat_history):
     docs = deduplicate(docs)
 
     # 4. Rerank
-    docs = rerank(query, docs)
+    ranked_docs = rerank(query, docs)
 
     # 5. Context
-    context = format_context(docs)
+    context = format_context(ranked_docs)
 
     # 6. Final LLM (STREAM)
     prompt = ChatPromptTemplate.from_messages([
