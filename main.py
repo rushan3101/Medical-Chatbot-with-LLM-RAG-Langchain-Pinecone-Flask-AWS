@@ -102,7 +102,7 @@ def format_context(docs: List[Document]) -> str:
         str: A formatted string containing the page number and page content for each document.
     """
     return "\n\n---\n\n".join(
-        [{d.page_content} for d in docs]
+        [d.page_content for d in docs]
     )
 
 
