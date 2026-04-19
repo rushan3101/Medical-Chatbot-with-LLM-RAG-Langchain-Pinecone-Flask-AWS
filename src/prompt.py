@@ -1,4 +1,6 @@
+import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 def get_metadata_prompt() -> str:
     """
     Returns prompt for extracting term and section metadata 
@@ -6,9 +8,9 @@ def get_metadata_prompt() -> str:
     section_set = []
     term_set = []
 
-    with open("src\\section_set.txt", "r") as f:
+    with open(os.path.join(BASE_DIR, "section_set.txt"), "r") as f:
         section_set = [line.strip() for line in f.readlines()]
-    with open("src\\term_set.txt", "r") as f:
+    with open(os.path.join(BASE_DIR, "term_set.txt"), "r") as f:
         term_set = [line.strip() for line in f.readlines()]
 
     # Metadata Prompt
