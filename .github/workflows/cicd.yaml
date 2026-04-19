@@ -24,8 +24,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Debug
+        run: |
+          echo "Current dir:"
+          pwd
+          echo "Files:"
+          ls -la
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
@@ -34,7 +38,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . --push
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . && docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   Continuous-Deployment:
