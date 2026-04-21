@@ -26,12 +26,14 @@ load_dotenv()
 if __name__ == "__main__":
 
     extracted_data = load_pdf('data')
+    print("Data Extracted Successfully" if extracted_data else "Data Extraction Failed")
 
     term_set = {item["term"] for item in extracted_data if item["term"]}
     section_set = {item["section"] for item in extracted_data if item["section"]}
     save_sets(term_set, section_set)
 
     documents = create_documents(extracted_data)
+    print("Documents Created Successfully" if documents else "Document Creation Failed")
 
     embeddings = download_hugging_face_embeddings()
 
@@ -45,9 +47,12 @@ if __name__ == "__main__":
             metric= "cosine",  # Cosine similarity
             spec=ServerlessSpec(cloud="aws", region="us-east-1")
         )
+    print("Pinecone Index Created Successfully" if pc.has_index(index_name) else "Pinecone Index Creation Failed")
 
     vector_store = PineconeVectorStore.from_documents(
     documents=documents,
     embedding=embeddings,
     index_name=index_name
 )
+    
+    print("Vector Store Created Successfully" if vector_store else "Vector Store Creation Failed")  

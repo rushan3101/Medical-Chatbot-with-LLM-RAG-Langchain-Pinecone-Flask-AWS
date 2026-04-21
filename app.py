@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, Response
 from main import run_rag
 from langchain_core.messages import HumanMessage, AIMessage
+import time
 
 app = Flask(__name__)
 
@@ -18,17 +19,22 @@ def index():
 def chat():
     user_input = request.form["msg"]
 
-    # Streaming generator
+    # Streaming generator with controlled speed
     def generate():
         response_text = ""
         trimmed_chat_history = chat_history[-8:]
 
-        stream = run_rag(user_input, trimmed_chat_history)
+        response_text = run_rag(user_input, trimmed_chat_history)
 
-        for chunk in stream:
-            token = str(chunk)
-            response_text += token
-            yield token
+        # Stream with controlled speed (simulate ChatGPT-like streaming)
+        # Yield in smaller batches with small delays
+        chunk_size = 10  # Number of characters to yield at once
+        delay = 0.02  # 20ms delay between chunks for smooth streaming
+        
+        for i in range(0, len(response_text), chunk_size):
+            chunk = response_text[i:i + chunk_size]
+            yield chunk
+            time.sleep(delay)
 
         # Save conversation AFTER full response is yielded
         chat_history.append(HumanMessage(content=user_input))

@@ -97,7 +97,7 @@ def extract_structured_data(doc: fitz.Document) -> list[dict]:
             "term": term,
             "section": section,
             "content": content,
-            "page": page_num + 1
+            "page": page_num + 1 - 14  # 15 is the starting page of actual content
         })
 
         # Clear buffer
@@ -168,6 +168,8 @@ def extract_structured_data(doc: fitz.Document) -> list[dict]:
 
     # Final flush
     save_section(page_num)
+
+    return structured_data
 
 def create_documents(structured_data: list[dict]) -> list[Document]:
     """

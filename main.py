@@ -6,7 +6,7 @@ from sentence_transformers import CrossEncoder
 
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.documents import Document
-from langchain_core.messages import BaseMessage
+from langchain_core.messages import BaseMessage, HumanMessage
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
@@ -26,7 +26,7 @@ class QueryMetadata(BaseModel):
 
 
 # Models
-meta_llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+meta_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 final_llm = ChatOpenAI(
     model="openai/gpt-oss-20b:free",
@@ -48,7 +48,7 @@ vector_store = PineconeVectorStore.from_existing_index(
 
 # Metadata Extraction
 metadata_prompt = ChatPromptTemplate.from_template(
-    get_metadata_prompt() + "\n\nQuery: {query}"
+    get_metadata_prompt()
 )
 
 metadata_chain = metadata_prompt | meta_llm.with_structured_output(QueryMetadata)
@@ -108,7 +108,7 @@ def format_context(docs: List[Document]) -> str:
 
 
 # RAG PIPELINE
-def run_rag(query: str,chat_history:list[BaseMessage]) -> Generator[str, None, None]:
+def run_rag(query: str,chat_history:list[BaseMessage]) -> str:
     """
     Run the RAG pipeline to generate a response to a given query.
 
@@ -135,7 +135,8 @@ def run_rag(query: str,chat_history:list[BaseMessage]) -> Generator[str, None, N
     """
 
     # 1. Metadata
-    meta = metadata_chain.invoke({"query": query})
+    query_chat_history = [history for history in chat_history if isinstance(history, HumanMessage)]
+    meta = metadata_chain.invoke({"query": query, "query_history": query_chat_history})
 
     # 2. Retrieval
     docs = []
@@ -184,7 +185,7 @@ def run_rag(query: str,chat_history:list[BaseMessage]) -> Generator[str, None, N
 
     chain = prompt | final_llm | StrOutputParser()
 
-    return chain.stream({
+    return chain.invoke({
         "query": query,
         "chat_history": chat_history,
         "context": context
