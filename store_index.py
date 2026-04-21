@@ -28,12 +28,12 @@ if __name__ == "__main__":
     extracted_data = load_pdf('data')
     print("Data Extracted Successfully" if extracted_data else "Data Extraction Failed")
 
-    term_set = {item["term"] for item in extracted_data if item["term"]}
-    section_set = {item["section"] for item in extracted_data if item["section"]}
-    save_sets(term_set, section_set)
-
     documents = create_documents(extracted_data)
     print("Documents Created Successfully" if documents else "Document Creation Failed")
+
+    term_set = set([doc.metadata["term"] for doc in documents])
+    section_set = set([doc.metadata["section"] for doc in documents])
+    save_sets(term_set, section_set)
 
     embeddings = download_hugging_face_embeddings()
 
