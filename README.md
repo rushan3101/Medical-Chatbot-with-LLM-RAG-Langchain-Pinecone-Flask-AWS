@@ -1,7 +1,5 @@
 # Medical-Chatbot-with-LLM-RAG-Langchain-Pinecone-Flask-AWS
 
-# 🩺 Medical Chatbot using RAG (LangChain + Pinecone + AWS)
-
 An end-to-end **Retrieval-Augmented Generation (RAG)** based medical chatbot that provides **accurate, context-aware answers** using a structured medical knowledge base.
 
 The system combines:
@@ -115,8 +113,8 @@ LLM --> OUTPUT[Answer]
 
 <table>
 <tr>
-<td><img src="images/Acne_1.png" width="400"/></td>
-<td><img src="images/Acne_2.png" width="400"/></td>
+<td><img src="images/Acne_1.png" width="500"/></td>
+<td><img src="images/Acne_2.png" width="500"/></td>
 </tr>
 </table>
 
@@ -126,8 +124,8 @@ LLM --> OUTPUT[Answer]
 
 <table>
 <tr>
-<td><img src="images/Antibiotics_1.png" width="400"/></td>
-<td><img src="images/Antibiotics_2.png" width="400"/></td>
+<td><img src="images/Antibiotics_1.png" width="500"/></td>
+<td><img src="images/Antibiotics_2.png" width="500"/></td>
 </tr>
 </table>
 
